@@ -92,7 +92,14 @@
   .seg button.on .save{background:rgba(255,255,255,.9);color:#0a3b2e}
 
   .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-  @media (max-width:660px){.grid{grid-template-columns:1fr}}
+  /* 모바일: 세로 쌓기 대신 가로 스와이프 캐러셀 (옆 카드 살짝 엿보임 + 스냅) */
+  @media (max-width:660px){
+    .grid{grid-template-columns:none;display:flex;gap:14px;
+      overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+      margin:0 -22px;padding:6px 22px 12px;scrollbar-width:none}
+    .grid::-webkit-scrollbar{display:none}
+    .grid .card{flex:0 0 87%;scroll-snap-align:center}
+  }
   .card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;
     padding:26px 24px 28px;box-shadow:var(--shadow);display:flex;flex-direction:column;
     transition:border-color .35s ease,box-shadow .35s ease,transform .35s ease}
