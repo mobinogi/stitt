@@ -344,6 +344,7 @@
     else{root.removeAttribute('data-mode'); if(!reduceM)retrig(sunI,'spin');}
     dayBtn.classList.toggle('on',mode!=='night');
     nightBtn.classList.toggle('on',mode==='night');
+    setNight(mode==='night');   // 별: 밤이면 아래→위로 등장, 낮이면 사라짐
   }
   dayBtn.onclick=function(){setMode('day')}; nightBtn.onclick=function(){setMode('night')};
   // 시간대 자동: 저녁 7시~오전 6시면 나잇, 그 외 데이 (사용자가 탭 누르면 오버라이드).
@@ -365,11 +366,28 @@
     var n=Math.min(150,Math.floor(innerWidth*innerHeight/12000));
     stars=Array.from({length:n},function(){return {x:Math.random()*W,y:Math.random()*H,
       r:(Math.random()*1.3+.3)*devicePixelRatio,a:Math.random(),s:Math.random()*.02+.004}});}
-  function draw(){x.clearRect(0,0,W,H);var col=ink();
-    for(var i=0;i<stars.length;i++){var st=stars[i];st.a+=st.s;var tw=(Math.sin(st.a)+1)/2*.7+.15;
-      x.globalAlpha=tw;x.fillStyle=col;x.beginPath();x.arc(st.x,st.y,st.r,0,7);x.fill();}
-    x.globalAlpha=1;if(!reduce)requestAnimationFrame(draw);}
-  size();draw();addEventListener('resize',function(){size();if(reduce)draw();placeSeg(y.classList.contains('on')?y:m);});
+  // 밤 전환 연출: 낮엔 별 없음 → 밤이 되면 아래쪽 별부터 켜지며 위로 쓸려 올라감
+  var nightP=0,nightTo=0,nightFrom=0,nightT0=null;
+  function setNight(on){var t=on?1:0; if(t===nightTo)return;
+    nightFrom=nightP; nightTo=t; nightT0=null; if(reduce){nightP=t;draw();}}
+  function draw(ts){x.clearRect(0,0,W,H);
+    if(nightP!==nightTo){var now=ts||performance.now();
+      if(nightT0==null)nightT0=now;
+      var e=Math.min((now-nightT0)/(nightTo?1500:600),1);
+      nightP=nightFrom+(nightTo-nightFrom)*(1-Math.pow(1-e,3));
+      if(e>=1)nightP=nightTo;}
+    if(nightP>0){var col=ink(),band=.45,rise=42*devicePixelRatio;
+      for(var i=0;i<stars.length;i++){var st=stars[i];
+        var thr=1-st.y/H;                                  // 아래쪽(y큰) 별이 먼저 켜짐
+        var p=(nightP*(1+band)-thr)/band; p=p<0?0:(p>1?1:p);
+        if(p<=0)continue;
+        st.a+=st.s;var tw=(Math.sin(st.a)+1)/2*.7+.15;
+        x.globalAlpha=tw*p;x.fillStyle=col;x.beginPath();
+        x.arc(st.x,st.y+(1-p)*rise,st.r,0,7);x.fill();}
+      x.globalAlpha=1;}
+    if(!reduce)requestAnimationFrame(draw);}
+  size();setNight(document.documentElement.getAttribute('data-mode')==='night');draw();
+  addEventListener('resize',function(){size();if(reduce)draw();placeSeg(y.classList.contains('on')?y:m);});
 
   /* 스크롤 리빌 — 표준 방식(각 행 개별 관찰). JS 없으면 그냥 보임 — 점진적 향상 */
   (function(){
