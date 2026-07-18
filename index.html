@@ -380,6 +380,14 @@
       en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rowIo.unobserve(e.target);}});
     },{threshold:0,rootMargin:'0px 0px -20% 0px'});
     rows.forEach(function(r){rowIo.observe(r);});
+    // 안전장치: 페이지 맨 아래 행은 트리거 라인(-20%)까지 못 올라감 → 바닥 근처면 남은 행 전부 리빌
+    function bottomGuard(){
+      if(innerHeight+scrollY>=document.documentElement.scrollHeight-140){
+        rows.forEach(function(r){if(!r.classList.contains('in')){r.classList.add('in');rowIo.unobserve(r);}});
+      }
+    }
+    addEventListener('scroll',bottomGuard,{passive:true});
+    addEventListener('resize',bottomGuard); bottomGuard();
   })();
 </script>
 </body>
