@@ -396,21 +396,26 @@
     var rows=box.querySelectorAll('.crow');
     box.classList.add('armed');
     rows.forEach(function(r){r.classList.add('reveal');});
-    // 박스 프레임(그림자·테두리): 박스가 화면에 들어오면 한 번 페이드인
-    var boxIo=new IntersectionObserver(function(en){
-      en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');boxIo.unobserve(e.target);}});
-    },{threshold:0,rootMargin:'0px 0px -8% 0px'});
-    boxIo.observe(box);
+    // 박스 테두리·그림자는 "모든 행이 다 나온 뒤" 마지막에 페이드인 (빈 프레임 먼저 안 뜨게)
+    var frameT;
+    function frameCheck(){
+      if(box.classList.contains('in'))return;
+      for(var i=0;i<rows.length;i++)if(!rows[i].classList.contains('in'))return;
+      clearTimeout(frameT);
+      frameT=setTimeout(function(){box.classList.add('in');},450); // 마지막 행 애니 끝나갈 즈음
+    }
     // 각 행: 자기가 화면에 들어오는 순간 개별 재생 → 빨리 내려도 절대 스킵 안 됨.
     // 하단 -20% = 트리거 라인을 위로 올려 화면 더 위쪽에서 등장.
     var rowIo=new IntersectionObserver(function(en){
       en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rowIo.unobserve(e.target);}});
+      frameCheck();
     },{threshold:0,rootMargin:'0px 0px -20% 0px'});
     rows.forEach(function(r){rowIo.observe(r);});
     // 안전장치: 페이지 맨 아래 행은 트리거 라인(-20%)까지 못 올라감 → 바닥 근처면 남은 행 전부 리빌
     function bottomGuard(){
       if(innerHeight+scrollY>=document.documentElement.scrollHeight-140){
         rows.forEach(function(r){if(!r.classList.contains('in')){r.classList.add('in');rowIo.unobserve(r);}});
+        frameCheck();
       }
     }
     addEventListener('scroll',bottomGuard,{passive:true});
