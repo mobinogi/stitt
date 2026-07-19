@@ -132,12 +132,12 @@
   .cta.ghost{background:transparent;color:var(--ink);border:1px solid var(--line-strong)}
   .feat{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:11px}
   .feat li{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--ink)}
-  .feat li .ic{flex:none;width:19px;height:19px;margin-top:1px;border-radius:6px;display:grid;place-items:center;
-    background:var(--accent-soft);color:var(--accent)}
+  /* 비교표와 동일한 맨 체크 (박스 없음) */
+  .feat li .ic{flex:none;width:15px;height:15px;margin-top:2px;display:grid;place-items:center;color:var(--accent)}
   .ck{display:block}
   .ck path{fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-  .feat li .ic .ck{width:12px;height:12px}
-  .card.team .feat li .ic{background:color-mix(in srgb,var(--mint) 18%,transparent);color:var(--mint)}
+  .feat li .ic .ck{width:15px;height:15px}
+  .card.team .feat li .ic{color:var(--mint)}
   .feat li .lead{color:var(--muted);font-weight:700;font-size:12px;letter-spacing:.02em;
     text-transform:uppercase;margin-bottom:2px;display:block}
   .feat .head{margin-bottom:-2px}
@@ -209,7 +209,6 @@
   </div>
 
   <header class="hero">
-    <span class="trial">🎁 지금 가입하면 <b>90일 무료 체험</b></span>
     <h1>사업의 리듬에 맞춰,<br>딱 필요한 만큼</h1>
     <p>흩어진 거래처와 복잡한 장부,<br>하나로 연결되는 순간.</p>
   </header>
