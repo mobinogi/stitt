@@ -9,7 +9,8 @@
   (function(){var h=new Date().getHours();if(h>=19||h<6)document.documentElement.setAttribute('data-mode','night');})();
 </script>
 <style>
-  /* ★ 앱과 동일 폰트: SUIT (OFL, 무료 웹폰트 CDN). 변수폰트라 100~900 굵기 지원 */
+  /* ★ 폰트: SUITE(헤드라인·기하학) 우선 + SUIT 폴백 (둘 다 OFL 무료 웹폰트) */
+  @import url('https://cdn.jsdelivr.net/gh/sun-typeface/SUITE@2/fonts/variable/woff2/SUITE-Variable.css');
   @import url('https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css');
   /* Day = 화이트+보라 (기본) / Night = 네이비+블루 (우상단 토글) */
   :root, :root[data-theme="dark"], :root[data-theme="light"]{
@@ -19,7 +20,9 @@
     --accent:#7C3AED; --accent-lite:#C4B0FF; --accent-soft:rgba(124,58,237,.09);
     --mint:#0FB39A; --star:rgba(124,58,237,.30);
     --shadow:0 22px 50px -30px rgba(90,50,170,.28);
-    --sans:'SUIT Variable','SUIT','Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR','Segoe UI',sans-serif;
+    --sans:'SUITE Variable','SUIT Variable','SUIT','Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR','Segoe UI',sans-serif;
+    /* SUIT 예외용(SUITE 제외): 플랜 카드 체크항목·비교표 데이터행 기능명에만 사용 */
+    --suit:'SUIT Variable','SUIT','Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR','Segoe UI',sans-serif;
   }
   :root[data-mode="night"], :root[data-theme="dark"][data-mode="night"], :root[data-theme="light"][data-mode="night"]{
     --bg:#080B16; --panel:#0F1626; --card:#131C31; --card-team:#141F3C;
@@ -115,6 +118,9 @@
     transform:translateY(-3px)}
   .plan{font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--muted);text-transform:uppercase}
   .card.team .plan{color:var(--accent)}
+  /* SUIT 예외: 플랜 카드 체크항목 텍스트 + 비교표 데이터행 기능명(헤더 .chead는 SUITE 유지) */
+  .card li{font-family:var(--suit)}
+  .compare .crow:not(.chead) .cf{font-family:var(--suit)}
   .who{margin:2px 0 18px;font-size:13.5px;color:var(--faint)}
   .price{display:flex;align-items:baseline;gap:6px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
   .price .was{font-size:18px;font-weight:700;color:var(--faint);text-decoration:line-through;
