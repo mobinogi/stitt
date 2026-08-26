@@ -1,0 +1,51 @@
+name: Brevo SMTP keepalive
+
+# Brevo 무료 SMTP 키는 90일간 미사용 시 만료된다.
+# 이 워크플로우가 매월 1·15일 admin@stitt.kr 로 메일 한 통을 Brevo SMTP로 보내
+# 키 사용 활동을 남겨 만료를 막는다. (발송 성공 여부와 무관하게 login+sendmail = 활동으로 기록)
+#
+# ⚠️ 필요한 GitHub Secret 2개 (repo Settings → Secrets and variables → Actions):
+#   BREVO_SMTP_LOGIN  = b6cc50001@smtp-brevo.com
+#   BREVO_SMTP_KEY    = (Brevo SMTP & API에서 발급한 SMTP 키)
+# ⚠️ GitHub은 커밋 없는 저장소의 예약 워크플로우를 60일 후 자동 비활성화한다.
+#   stitt-web에 가끔 커밋하면 유지됨. 혹시 멈추면 Actions 탭에서 수동 실행(Run workflow)하거나 재활성화.
+
+on:
+  schedule:
+    - cron: '0 0 1,15 * *'   # 매월 1일·15일 00:00 UTC (90일 대비 넉넉)
+  workflow_dispatch: {}        # Actions 탭에서 수동 실행 버튼
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send keepalive mail via Brevo SMTP
+        env:
+          SMTP_LOGIN: ${{ secrets.BREVO_SMTP_LOGIN }}
+          SMTP_KEY: ${{ secrets.BREVO_SMTP_KEY }}
+        run: |
+          python - <<'PY'
+          import os, smtplib
+          from email.mime.text import MIMEText
+          from email.utils import formatdate, make_msgid
+
+          login = os.environ["SMTP_LOGIN"]
+          key = os.environ["SMTP_KEY"]
+          if not login or not key:
+              raise SystemExit("BREVO_SMTP_LOGIN / BREVO_SMTP_KEY 시크릿이 비어있음")
+
+          msg = MIMEText(
+              "Automated keepalive so the Brevo SMTP key stays active. Safe to ignore.",
+              "plain", "utf-8")
+          msg["Subject"] = "[stitt] Brevo SMTP keepalive"
+          msg["From"] = "admin@stitt.kr"
+          msg["To"] = "admin@stitt.kr"
+          msg["Date"] = formatdate(localtime=True)
+          msg["Message-ID"] = make_msgid(domain="stitt.kr")
+
+          with smtplib.SMTP("smtp-relay.brevo.com", 587, timeout=30) as s:
+              s.starttls()
+              s.login(login, key)
+              s.sendmail("admin@stitt.kr", ["admin@stitt.kr"], msg.as_string())
+          print("keepalive sent")
+          PY
