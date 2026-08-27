@@ -203,8 +203,14 @@
   :root.theming .brandlogo img{transition:opacity .5s ease!important}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-  /* ── 개인 시작 버튼 컨페티(bubbly) 효과 ── 버블색=브랜드 --accent */
-  .bubbly-button{ position:relative; z-index:1; }
+  /* ── 개인 시작 버튼 컨페티(bubbly) ── 원본 충실: solid 버튼 + 같은색 버블. 색은 --bub 한 곳만 바꾸면 됨 */
+  .bubbly-button{
+    --bub:#ff0081;                 /* 버튼·버블 색 (원본 핑크). 브랜드 보라 원하면 var(--accent)로 바꿔 */
+    position:relative; z-index:1;
+    background:var(--bub); color:#fff; border:0;
+    box-shadow:0 10px 28px -8px color-mix(in srgb, var(--bub) 55%, transparent);
+  }
+  .bubbly-button:hover{ box-shadow:0 12px 32px -8px color-mix(in srgb, var(--bub) 65%, transparent); }
   .bubbly-button:focus{ outline:0; }
   .bubbly-button:before, .bubbly-button:after{
     position:absolute; content:''; display:block;
@@ -214,40 +220,40 @@
   .bubbly-button:before{
     display:none; top:-75%;
     background-image:
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, transparent 20%, var(--accent) 20%, transparent 30%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, var(--accent) 15%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%);
-    background-size:10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, transparent 20%, var(--bub) 20%, transparent 30%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, transparent 10%, var(--bub) 15%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%);
+    background-size:14px 14px, 24px 24px, 18px 18px, 24px 24px, 22px 22px, 14px 14px, 18px 18px, 14px 14px, 22px 22px;
   }
   .bubbly-button:after{
     display:none; bottom:-75%;
     background-image:
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, transparent 10%, var(--accent) 15%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%),
-      radial-gradient(circle, var(--accent) 20%, transparent 20%);
-    background-size:15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, transparent 10%, var(--bub) 15%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%),
+      radial-gradient(circle, var(--bub) 20%, transparent 20%);
+    background-size:18px 18px, 24px 24px, 22px 22px, 24px 24px, 18px 18px, 14px 14px, 24px 24px;
   }
   .bubbly-button.animate:before{ display:block; animation:topBubbles ease-in-out .75s forwards; }
   .bubbly-button.animate:after{ display:block; animation:bottomBubbles ease-in-out .75s forwards; }
   @keyframes topBubbles{
     0%{ background-position:5% 90%,10% 90%,10% 90%,15% 90%,25% 90%,25% 90%,40% 90%,55% 90%,70% 90%; }
     50%{ background-position:0% 80%,0% 20%,10% 40%,20% 0%,30% 30%,22% 50%,50% 50%,65% 20%,90% 30%; }
-    100%{ background-position:0% 70%,0% 10%,10% 30%,20% -10%,30% 20%,22% 40%,50% 40%,65% 10%,90% 20%; background-size:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%; }
+    100%{ background-position:0% 70%,0% 10%,10% 30%,20% -10%,30% 20%,22% 40%,50% 40%,65% 10%,90% 20%; background-size:0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px; }
   }
   @keyframes bottomBubbles{
     0%{ background-position:10% -10%,30% 10%,55% -10%,70% -10%,85% -10%,70% -10%,70% 0%; }
     50%{ background-position:0% 80%,20% 80%,45% 60%,60% 100%,75% 70%,95% 60%,105% 0%; }
-    100%{ background-position:0% 90%,20% 90%,45% 70%,60% 110%,75% 80%,95% 70%,110% 10%; background-size:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%; }
+    100%{ background-position:0% 90%,20% 90%,45% 70%,60% 110%,75% 80%,95% 70%,110% 10%; background-size:0px 0px,0px 0px,0px 0px,0px 0px,0px 0px,0px 0px; }
   }
 </style>
 </head>
@@ -287,7 +293,7 @@
         <span class="per" data-m="/월" data-y="/년">/월</span>
       </div>
       <div class="sub" data-m="언제든 해지 가능" data-y="연간 결제 · 월 3,000원 꼴">언제든 해지 가능</div>
-      <button class="cta ghost bubbly-button">개인으로 시작</button>
+      <button class="cta bubbly-button">개인으로 시작</button>
       <ul class="feat">
         <li class="head"><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span><span class="lead">핵심 장부</span>거래처·상품·매출·매입 관리</span></li>
         <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>다중 사업자 관리</span></li>
