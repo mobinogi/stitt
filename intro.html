@@ -51,7 +51,8 @@
     -webkit-background-clip:text;background-clip:text;color:transparent}
 
   /* ── 커버 ── */
-  .cover .inner{display:grid;grid-template-columns:1.05fr 1.15fr;gap:56px;align-items:center}
+  .cover>#ht{position:absolute;inset:0;z-index:0;pointer-events:none}
+  .cover .inner{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr 1.15fr;gap:56px;align-items:center}
   .mark-wrap{position:relative;aspect-ratio:1;display:grid;place-items:center}
   .ring{position:absolute;border-radius:50%;border:1px solid var(--line-2)}
   .ring.r1{inset:6%}.ring.r2{inset:20%;border-color:var(--line)}.ring.r3{inset:34%;
@@ -62,7 +63,9 @@
   .bars span:nth-child(3){height:52%}
   .bars span:nth-child(4){height:100%;background:linear-gradient(var(--accent),#00b088)}
   .bars span:nth-child(5){height:74%;background:linear-gradient(var(--accent),#00b088)}
-  .cover h1{margin:16px 0 6px}
+  .wordmark{height:clamp(56px,7.4vw,100px);width:auto;display:block;margin:18px 0 8px;
+    transition:filter .8s ease}
+  .cover.active .wordmark{filter:drop-shadow(0 0 22px rgba(0,204,157,.42))}
   .cover .tag{font-family:var(--disp);font-weight:800;font-size:clamp(20px,2.4vw,30px);
     color:var(--ink);margin:0 0 18px;letter-spacing:-.03em}
   .teaser{list-style:none;margin:22px 0 26px;padding:0;display:flex;flex-wrap:wrap;gap:8px 10px}
@@ -181,6 +184,7 @@
 
   <!-- 커버 -->
   <section class="slide cover" id="s0">
+    <canvas id="ht" aria-hidden="true"></canvas>
     <div class="inner">
       <div class="mark-wrap rise">
         <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
@@ -188,7 +192,7 @@
       </div>
       <div class="copy">
         <div class="eyebrow rise">소상공인 장부 앱</div>
-        <h1 class="rise d1">스팃<span class="grad">.</span></h1>
+        <img class="wordmark rise d1" src="logo-dark.png" alt="스팃" width="374" height="189">
         <p class="tag rise d1">재고·매출·거래처를 <span class="grad">한 손에.</span></p>
         <p class="lead rise d2">복잡한 장부는 이제 그만. 탭 몇 번이면 오늘 장사가 정리됩니다.
           현장에서 바로 쓰라고 만든, 사장님을 위한 가장 가벼운 장부.</p>
@@ -357,6 +361,55 @@
       });
     }, { rootMargin: '-42% 0px -42% 0px', threshold: 0.01 });
     slides.forEach(function(s){ io.observe(s); });
+  })();
+</script>
+<script>
+  /* 커버 하프톤 — Canvas 제너러티브: 마크 중심에서 퍼지는 리플 도트(민트→보라). 텍스트 가독성 위해 좌측 집중 */
+  (function(){
+    var cv=document.getElementById('ht'); if(!cv) return;
+    var ctx=cv.getContext('2d'); if(!ctx) return;
+    var cover=document.getElementById('s0');
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var dpr=Math.min(window.devicePixelRatio||1,2), w=0,h=0;
+    function size(){
+      var r=cover.getBoundingClientRect(); w=r.width; h=r.height;
+      cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+      cv.style.width=w+'px'; cv.style.height=h+'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    function frame(t){
+      ctx.clearRect(0,0,w,h);
+      var grid=17, maxR=grid*0.6, cx=w*0.25, cy=h*0.46, R=Math.max(w,h)*0.5;
+      for(var y=grid*0.5;y<h;y+=grid){
+        for(var x=grid*0.5;x<w;x+=grid){
+          var dx=x-cx, dy=y-cy, d=Math.sqrt(dx*dx+dy*dy);
+          var fall=1-d/R; if(fall<=0) continue; fall*=fall;
+          var f=fall*(0.55+0.45*Math.sin(d*0.03-t*1.05))*(0.72+0.28*Math.sin((x-y)*0.011+t*0.5));
+          if(f<=0.03) continue;
+          var r=maxR*f; if(r<0.4) continue;
+          var mix=x/w; if(mix<0)mix=0; else if(mix>1)mix=1;
+          var cr=(0x8B*mix)|0, cg=(0xCC+(0x7C-0xCC)*mix)|0, cb=(0x9D+(0xFF-0x9D)*mix)|0;
+          ctx.fillStyle='rgba('+cr+','+cg+','+cb+','+(f*0.4).toFixed(3)+')';
+          ctx.beginPath(); ctx.arc(x,y,r,0,6.2832); ctx.fill();
+        }
+      }
+    }
+    size();
+    if(reduce){ frame(0.7); addEventListener('resize',function(){size();frame(0.7);}); return; }
+    var running=true, raf;
+    function loop(){ if(!running) return; frame(performance.now()/1000*0.6); raf=requestAnimationFrame(loop); }
+    loop();
+    addEventListener('resize', size);
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){ running=false; cancelAnimationFrame(raf); }
+      else if(!running){ running=true; loop(); }
+    });
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){ es.forEach(function(e){
+        if(e.isIntersecting){ if(!running){running=true;loop();} }
+        else { running=false; cancelAnimationFrame(raf); }
+      }); }, {threshold:0.02}).observe(cover);
+    }
   })();
 </script>
 </body>
