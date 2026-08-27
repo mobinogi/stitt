@@ -28,16 +28,28 @@ jobs:
           import os, smtplib
           from email.mime.text import MIMEText
           from email.utils import formatdate, make_msgid
+          from email.header import Header
 
           login = os.environ.get("SMTP_LOGIN", "")
           key = os.environ.get("SMTP_KEY", "")
           if not login or not key:
               raise SystemExit("ERROR: BREVO_SMTP_LOGIN / BREVO_SMTP_KEY 시크릿이 비어있음 (Settings→Secrets에서 등록)")
 
-          msg = MIMEText(
-              "Automated keepalive so the Brevo SMTP key stays active. Safe to ignore.",
-              "plain", "utf-8")
-          msg["Subject"] = "[stitt] Brevo SMTP keepalive"
+          body = (
+              "이 메일은 사람이 보낸 게 아니라 자동 발송입니다. 무시하고 삭제해도 됩니다.\n\n"
+              "[무슨 메일인가요?]\n"
+              "Brevo 무료 SMTP 키는 90일간 사용이 없으면 자동 만료됩니다.\n"
+              "이를 막기 위해 GitHub Actions가 매월 1·15일 admin@stitt.kr 로 이 메일을\n"
+              "자동으로 한 통 보내 '키 사용 활동'을 남깁니다. (그래서 내용이 없습니다)\n\n"
+              "[설정 위치]\n"
+              "GitHub 저장소 mobinogi/stitt → .github/workflows/brevo-keepalive.yml\n\n"
+              "[안심하세요] 이 메일은 안 읽어도 되고, 스팸 처리·삭제해도\n"
+              "키 유지 자동화에는 아무 영향이 없습니다. 실제 고객 메일과 무관합니다.\n"
+          )
+          msg = MIMEText(body, "plain", "utf-8")
+          msg["Subject"] = Header(
+              "[stitt·봇 자동발송] Brevo 키 만료방지용 — 무시하세요 (사람이 보낸 것 아님)",
+              "utf-8").encode()
           msg["From"] = "admin@stitt.kr"
           msg["To"] = "admin@stitt.kr"
           msg["Date"] = formatdate(localtime=True)
