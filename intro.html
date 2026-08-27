@@ -145,6 +145,17 @@
   .rise{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1)}
   .rise.in{opacity:1;transform:none}
   .rise.d1{transition-delay:.08s}.rise.d2{transition-delay:.16s}.rise.d3{transition-delay:.24s}
+  /* 중앙(active)일 때 헤드라인 민트 글로우 — 은은하게 페이드인 */
+  .cover h1, .copy h2, .close h2{transition:text-shadow .8s ease}
+  .cover.active h1,
+  .feat.active .copy h2,
+  .close.active h2{ text-shadow:0 0 26px rgba(0,204,157,.34), 0 0 58px rgba(0,204,157,.16); }
+  /* 기능 슬라이드: 폰이 먼저 올라오고 → 번호·타이틀·설명이 차례로 (더 고급스럽게) */
+  .feat .stage.rise{transition-delay:0s;transform:translateY(44px)}
+  .feat .stage.rise.in{transform:none}
+  .feat .copy .num.rise{transition-delay:.30s}
+  .feat .copy h2.rise{transition-delay:.42s}
+  .feat .copy .lead.rise{transition-delay:.54s}
 
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
@@ -328,27 +339,24 @@
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var slides = [].slice.call(document.querySelectorAll('.slide'));
     var cur = document.getElementById('cur');
-
-    // 스크롤 등장
-    if (!reduce && 'IntersectionObserver' in window){
-      var io = new IntersectionObserver(function(es){
-        es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); });
-      }, {threshold:.16});
-      document.querySelectorAll('.rise').forEach(function(el){ io.observe(el); });
-    } else {
-      document.querySelectorAll('.rise').forEach(function(el){ el.classList.add('in'); });
+    function pad(n){ return ('0'+n).slice(-2); }
+    function setActive(slide, on){
+      slide.classList.toggle('active', on);
+      slide.querySelectorAll('.rise').forEach(function(el){ el.classList.toggle('in', on); });
     }
-
-    // 현재 슬라이드 카운터
-    var cio = new IntersectionObserver(function(es){
+    if (reduce || !('IntersectionObserver' in window)){
+      document.querySelectorAll('.rise').forEach(function(el){ el.classList.add('in'); });
+      return;
+    }
+    // 중앙 밴드 진입 시 active → 폰 먼저·텍스트 나중 페이드인 + 타이틀 글로우.
+    // 밴드 이탈 시 리셋 → 다시 스냅해 오면 애니 재생.
+    var io = new IntersectionObserver(function(es){
       es.forEach(function(e){
-        if(e.isIntersecting){
-          var i = slides.indexOf(e.target) + 1;
-          cur.textContent = ('0'+i).slice(-2);
-        }
+        setActive(e.target, e.isIntersecting);
+        if (e.isIntersecting) cur.textContent = pad(slides.indexOf(e.target) + 1);
       });
-    }, {threshold:.55});
-    slides.forEach(function(s){ cio.observe(s); });
+    }, { rootMargin: '-42% 0px -42% 0px', threshold: 0.01 });
+    slides.forEach(function(s){ io.observe(s); });
   })();
 </script>
 </body>
