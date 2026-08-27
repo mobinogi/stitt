@@ -47,9 +47,7 @@ jobs:
               "키 유지 자동화에는 아무 영향이 없습니다. 실제 고객 메일과 무관합니다.\n"
           )
           msg = MIMEText(body, "plain", "utf-8")
-          msg["Subject"] = Header(
-              "[stitt·봇 자동발송] Brevo 키 만료방지용 — 무시하세요 (사람이 보낸 것 아님)",
-              "utf-8").encode()
+          msg["Subject"] = Header("[stitt·봇 자동발송] Brevo 키 만료방지용", "utf-8").encode()
           msg["From"] = "admin@stitt.kr"
           msg["To"] = "admin@stitt.kr"
           msg["Date"] = formatdate(localtime=True)
