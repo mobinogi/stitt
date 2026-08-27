@@ -96,7 +96,7 @@
     background:var(--mint);color:#04231b;letter-spacing:0}
   .seg button.on .save{background:rgba(255,255,255,.9);color:#0a3b2e}
 
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,360px));gap:18px;justify-content:center}
   /* 모바일: 세로 쌓기 대신 가로 스와이프 캐러셀 (옆 카드 살짝 엿보임 + 스냅) */
   @media (max-width:660px){
     /* 세로 padding을 넉넉히 — overflow-x:auto가 세로도 클리핑해서 카드 그림자가 잘림 */
@@ -202,6 +202,53 @@
     background-color .5s ease,box-shadow .5s ease!important}
   :root.theming .brandlogo img{transition:opacity .5s ease!important}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* ── 개인 시작 버튼 컨페티(bubbly) 효과 ── 버블색=브랜드 --accent */
+  .bubbly-button{ position:relative; z-index:1; }
+  .bubbly-button:focus{ outline:0; }
+  .bubbly-button:before, .bubbly-button:after{
+    position:absolute; content:''; display:block;
+    width:140%; height:100%; left:-20%; z-index:-1;
+    transition:all ease-in-out .5s; background-repeat:no-repeat;
+  }
+  .bubbly-button:before{
+    display:none; top:-75%;
+    background-image:
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, transparent 20%, var(--accent) 20%, transparent 30%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, transparent 10%, var(--accent) 15%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%);
+    background-size:10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+  }
+  .bubbly-button:after{
+    display:none; bottom:-75%;
+    background-image:
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, transparent 10%, var(--accent) 15%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%),
+      radial-gradient(circle, var(--accent) 20%, transparent 20%);
+    background-size:15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
+  }
+  .bubbly-button.animate:before{ display:block; animation:topBubbles ease-in-out .75s forwards; }
+  .bubbly-button.animate:after{ display:block; animation:bottomBubbles ease-in-out .75s forwards; }
+  @keyframes topBubbles{
+    0%{ background-position:5% 90%,10% 90%,10% 90%,15% 90%,25% 90%,25% 90%,40% 90%,55% 90%,70% 90%; }
+    50%{ background-position:0% 80%,0% 20%,10% 40%,20% 0%,30% 30%,22% 50%,50% 50%,65% 20%,90% 30%; }
+    100%{ background-position:0% 70%,0% 10%,10% 30%,20% -10%,30% 20%,22% 40%,50% 40%,65% 10%,90% 20%; background-size:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%; }
+  }
+  @keyframes bottomBubbles{
+    0%{ background-position:10% -10%,30% 10%,55% -10%,70% -10%,85% -10%,70% -10%,70% 0%; }
+    50%{ background-position:0% 80%,20% 80%,45% 60%,60% 100%,75% 70%,95% 60%,105% 0%; }
+    100%{ background-position:0% 90%,20% 90%,45% 70%,60% 110%,75% 80%,95% 70%,110% 10%; background-size:0% 0%,0% 0%,0% 0%,0% 0%,0% 0%,0% 0%; }
+  }
 </style>
 </head>
 <body>
@@ -240,7 +287,7 @@
         <span class="per" data-m="/월" data-y="/년">/월</span>
       </div>
       <div class="sub" data-m="언제든 해지 가능" data-y="연간 결제 · 월 3,000원 꼴">언제든 해지 가능</div>
-      <button class="cta ghost">개인으로 시작</button>
+      <button class="cta ghost bubbly-button">개인으로 시작</button>
       <ul class="feat">
         <li class="head"><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span><span class="lead">핵심 장부</span>거래처·상품·매출·매입 관리</span></li>
         <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>다중 사업자 관리</span></li>
@@ -248,11 +295,12 @@
         <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>외상·수금 관리</span></li>
         <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>상품별 매출 집계</span></li>
         <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>엑셀 장부 내보내기</span></li>
-        <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>AI 장부 불러오기</span></li>
+        <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>엑셀 장부 불러오기</span></li>
         <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span><b>데이터 100% 내 폰에 저장</b> (로컬)</span></li>
       </ul>
     </section>
 
+    <!-- ★ 팀플랜 v1 출시 보류(개인전용). 팀 출시 때 이 블록 주석 해제. [[policy_v1_no_team]]
     <section class="card team">
       <div class="plan">팀 <span class="promo">출시 특가</span></div>
       <div class="who">직원을 둔 사장님을 위한</div>
@@ -272,8 +320,10 @@
         <li><span class="ic"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span><span>직원별 권한 관리</span></li>
       </ul>
     </section>
+    -->
   </div>
 
+  <!-- ★ 팀 보류(개인전용): 개인/팀 비교표 숨김. 팀 출시 때 주석 해제. [[policy_v1_no_team]]
   <h2 class="ctitle">개인과 팀, 무엇이 다를까요?</h2>
   <div class="compare">
     <div class="crow chead"><div class="cf">기능</div><div class="cp">개인</div><div class="cp team">팀</div></div>
@@ -292,6 +342,7 @@
     <div class="crow"><div class="cf">멀티 디바이스 · 자동 백업</div><div class="cp"><span class="dash">–</span></div><div class="cp team"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></div></div>
     <div class="crow"><div class="cf">직원별 권한 관리</div><div class="cp"><span class="dash">–</span></div><div class="cp team"><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></div></div>
   </div>
+  -->
 
   <p class="foot">
     <span>Google Play 결제</span><span class="dot">·</span>
@@ -431,6 +482,21 @@
     }
     addEventListener('scroll',bottomGuard,{passive:true});
     addEventListener('resize',bottomGuard); bottomGuard();
+  })();
+</script>
+<script>
+  /* 개인 시작 버튼 컨페티(bubbly) — 클릭 시 애니메이션 클래스 토글 */
+  (function(){
+    var btns = document.getElementsByClassName("bubbly-button");
+    for (var i = 0; i < btns.length; i++){
+      btns[i].addEventListener('click', function(e){
+        var el = e.currentTarget;
+        el.classList.remove('animate');
+        void el.offsetWidth;          /* reflow → 연속 클릭에도 애니 재시작 */
+        el.classList.add('animate');
+        setTimeout(function(){ el.classList.remove('animate'); }, 700);
+      }, false);
+    }
   })();
 </script>
 </body>
