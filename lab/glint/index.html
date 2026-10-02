@@ -110,6 +110,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);overf
     <div class="r"><label for="sS">별</label><input id="sS" type="range" min="0" max="150" value="90"></div>
     <div class="r"><label for="sL">사선 결</label><input id="sL" type="range" min="0" max="150" value="50"></div>
     <div class="r"><label for="amt">빛(전체)</label><input id="amt" type="range" min="0" max="100" value="75"></div>
+    <div class="r"><button class="btn" id="save" style="flex:1">값 복사</button><div class="status" id="saved" style="flex:2"></div></div>
     <div class="r"><label>테마</label><div class="seg"><button class="btn ghost" id="tLight">데이</button><button class="btn ghost" id="tDark">다크</button><button class="btn ghost" id="tSys">시스템</button></div></div>
   </div>
 </div>
@@ -144,6 +145,16 @@ addEventListener('pointermove',e=>px(e.clientX,e.clientY));
 addEventListener('touchmove',e=>px(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
 (function hl(){const k=reduce?1:.14;mx+=(tmx-mx)*k;my+=(tmy-my)*k;app.style.setProperty('--mx',mx.toFixed(2));app.style.setProperty('--my',my.toFixed(2));app.style.setProperty('--hi',(amt.value/100).toFixed(2));app.style.setProperty('--hf',(sF.value/100).toFixed(2));app.style.setProperty('--hs',(sS.value/100).toFixed(2));app.style.setProperty('--hl',(sL.value/100).toFixed(2));requestAnimationFrame(hl);})();
 document.querySelectorAll('#modes .btn').forEach(b=>b.onclick=()=>{app.dataset.mode=b.dataset.m;document.querySelectorAll('#modes .btn').forEach(o=>o.classList.toggle('on',o===b));});
+// ── 값 복사 + 폰에 기억 ──
+const KEY='stitt-glint-v1',sliders={무지개:sF,별:sS,'사선 결':sL,'빛':amt};
+function line(){return Object.entries(sliders).map(([k,el])=>`${k} ${el.value}`).join(' / ')+` (방식: ${app.dataset.mode==='holo'?'홀로':'바닐라'})`;}
+try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v)Object.entries(sliders).forEach(([k,el])=>{if(v[k]!=null)el.value=v[k];});}catch(e){}
+document.getElementById('save').onclick=async()=>{
+  const t=line(),out=document.getElementById('saved');
+  try{localStorage.setItem(KEY,JSON.stringify(Object.fromEntries(Object.entries(sliders).map(([k,el])=>[k,el.value]))));}catch(e){}
+  try{await navigator.clipboard.writeText(t);out.textContent='복사됨: '+t;}
+  catch(e){out.textContent=t;const r=document.createRange();r.selectNodeContents(out);const sel=getSelection();sel.removeAllRanges();sel.addRange(r);}
+};
 const root=document.documentElement;
 root.setAttribute('data-theme','dark'); // 홀로는 다크 전용 — 다크로 시작
 document.getElementById('tLight').onclick=()=>root.setAttribute('data-theme','light');
