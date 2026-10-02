@@ -103,8 +103,16 @@ list.innerHTML=html;
 const glint=document.getElementById('glint'),status=document.getElementById('status'),amt=document.getElementById('amt');
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let tx=.5,ti=.8,x=.5,i=.8,source='none',lastSensor=0;
-// 기울기 → 목표값. gamma(좌우 -45~45) → 0~1, beta(앞뒤)로 세기 살짝
-function fromTilt(g,b){tx=Math.min(1,Math.max(0,.5+g/70));ti=Math.min(1,Math.max(.35,.85-Math.abs((b??45)-45)/120));}
+// 기울기 → 목표값. 좌우(gamma)와 앞뒤(beta) 둘 다 빛을 사선 방향으로 밀어낸다.
+//   앞뒤 기준은 처음 잡은 각도(손에 든 자세가 사람마다 달라서) — 그 자세가 가운데.
+let baseB=null;
+function fromTilt(g,b){
+  b=b??45; if(baseB===null)baseB=b;
+  baseB+=(b-baseB)*0.002; // 자세를 오래 바꾸면 기준도 천천히 따라옴
+  const db=b-baseB;
+  tx=Math.min(1,Math.max(0,.5+g/70+db/60));
+  ti=Math.min(1,Math.max(.4,.9-Math.abs(db)/150));
+}
 addEventListener('deviceorientation',e=>{if(e.gamma==null)return;source='sensor';lastSensor=performance.now();fromTilt(e.gamma,e.beta);status.innerHTML='<b>기울기 센서</b>로 움직이는 중';});
 // iOS는 권한 버튼이 필요
 if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){const p=document.getElementById('perm');p.hidden=false;p.onclick=()=>DeviceOrientationEvent.requestPermission().then(r=>{p.hidden=r==='granted';}).catch(()=>{status.textContent='센서 권한이 거절됐어요. 화면을 끌어서 보세요';});}
