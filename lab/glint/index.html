@@ -58,14 +58,14 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);overf
     repeating-linear-gradient(-35deg,rgba(0,0,0,.55) 0 2px,rgba(0,0,0,0) 2px 7px);
   background-blend-mode:multiply;background-size:500% 500%,100% 100%;
   background-position:calc(var(--mx)*1%) calc(var(--my)*1%),0 0;
-  -webkit-mask-image:radial-gradient(circle at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.45) 35%,rgba(0,0,0,.08) 75%);
-          mask-image:radial-gradient(circle at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.45) 35%,rgba(0,0,0,.08) 75%)}
+  -webkit-mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.45) 35%,rgba(0,0,0,.08) 75%);
+          mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.45) 35%,rgba(0,0,0,.08) 75%)}
 .h-spark{mix-blend-mode:color-dodge;opacity:calc(.9*var(--hi));background-image:var(--spark);background-size:160px 160px;
   background-position:calc(var(--mx)*-1.2px) calc(var(--my)*-0.8px);
-  -webkit-mask-image:radial-gradient(circle at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.25) 40%,transparent 70%);
-          mask-image:radial-gradient(circle at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.25) 40%,transparent 70%)}
+  -webkit-mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.25) 40%,transparent 70%);
+          mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.25) 40%,transparent 70%)}
 .h-glare{mix-blend-mode:overlay;opacity:var(--hi);
-  background:radial-gradient(farthest-corner circle at calc(var(--mx)*1%) calc(var(--my)*1%),rgba(255,255,255,.85) 6%,rgba(255,255,255,.35) 22%,rgba(0,0,0,.35) 90%)}
+  background:radial-gradient(ellipse 160% 420% at calc(var(--mx)*1%) calc(var(--my)*1%),rgba(255,255,255,.7) 0%,rgba(255,255,255,.38) 25%,rgba(255,255,255,.12) 50%,rgba(0,0,0,.25) 100%)}
 .app[data-mode="holo"] .holo{display:block}
 .app[data-mode="holo"] .js-tilt-glare{display:none}
 :root[data-theme="light"] .holo{display:none!important}
