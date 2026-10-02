@@ -52,18 +52,22 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);overf
    --mx/--my = 기울기로 정한 빛 위치(%), --hi = 세기(0~1). 포일·반짝이는 빛 근처에서만 살아난다(마스크). */
 .holo{position:absolute;inset:0;pointer-events:none;display:none}
 .holo>i{position:absolute;inset:0}
-.h-foil{mix-blend-mode:color-dodge;opacity:calc(.55*var(--hi));filter:brightness(.75) contrast(1.6) saturate(1.2);
+.h-foil{mix-blend-mode:color-dodge;opacity:calc(.7*var(--hi)*var(--hf));filter:brightness(.75) contrast(1.6) saturate(1.2);
   background:
-    repeating-linear-gradient(110deg,hsl(355 85% 62%) 0%,hsl(40 90% 58%) 4%,hsl(120 70% 55%) 8%,hsl(190 85% 58%) 12%,hsl(255 80% 66%) 16%,hsl(320 85% 62%) 20%,hsl(355 85% 62%) 24%),
-    repeating-linear-gradient(-35deg,rgba(0,0,0,.55) 0 2px,rgba(0,0,0,0) 2px 7px);
-  background-blend-mode:multiply;background-size:500% 500%,100% 100%;
-  background-position:calc(var(--mx)*1%) calc(var(--my)*1%),0 0;
+    repeating-linear-gradient(110deg,hsl(355 85% 62%) 0%,hsl(40 90% 58%) 4%,hsl(120 70% 55%) 8%,hsl(190 85% 58%) 12%,hsl(255 80% 66%) 16%,hsl(320 85% 62%) 20%,hsl(355 85% 62%) 24%);
+  background-size:500% 500%;
+  background-position:calc(var(--mx)*1%) calc(var(--my)*1%);
   -webkit-mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.45) 35%,rgba(0,0,0,.08) 75%);
           mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.45) 35%,rgba(0,0,0,.08) 75%)}
-.h-spark{mix-blend-mode:color-dodge;opacity:calc(.9*var(--hi));background-image:var(--spark);background-size:160px 160px;
+.h-spark{mix-blend-mode:color-dodge;opacity:calc(var(--hi)*var(--hs));background-image:var(--spark);background-size:160px 160px;
   background-position:calc(var(--mx)*-1.2px) calc(var(--my)*-0.8px);
   -webkit-mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.25) 40%,transparent 70%);
           mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.25) 40%,transparent 70%)}
+.h-lines{mix-blend-mode:overlay;opacity:calc(var(--hi)*var(--hl));
+  background:repeating-linear-gradient(-35deg,rgba(255,255,255,.9) 0 1px,rgba(255,255,255,0) 1px 6px);
+  background-position:calc(var(--mx)*.6px) 0;
+  -webkit-mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.4) 35%,rgba(0,0,0,.05) 75%);
+          mask-image:radial-gradient(ellipse 140% 340% at calc(var(--mx)*1%) calc(var(--my)*1%),#000 0%,rgba(0,0,0,.4) 35%,rgba(0,0,0,.05) 75%)}
 .h-glare{mix-blend-mode:overlay;opacity:var(--hi);
   background:radial-gradient(ellipse 160% 420% at calc(var(--mx)*1%) calc(var(--my)*1%),rgba(255,255,255,.7) 0%,rgba(255,255,255,.38) 25%,rgba(255,255,255,.12) 50%,rgba(0,0,0,.25) 100%)}
 .app[data-mode="holo"] .holo{display:block}
@@ -76,7 +80,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);overf
 .ctl{position:absolute;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:3;
   background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:grid;gap:10px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
 .ctl .r{display:flex;align-items:center;gap:10px;font-size:13px}
-.ctl label{color:var(--sub);flex:none;width:52px}
+.ctl label{color:var(--sub);flex:none;width:58px}
 .ctl input[type=range]{flex:1;accent-color:var(--accent);min-width:0}
 .status{font-size:12px;color:var(--sub);min-width:0}
 .status b{color:var(--fg)}
@@ -93,7 +97,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);overf
   <div class="list" id="list"></div>
 
   <header class="head" id="head">
-    <div class="holo" id="holo"><i class="h-foil"></i><i class="h-spark"></i><i class="h-glare"></i></div>
+    <div class="holo" id="holo"><i class="h-foil"></i><i class="h-lines"></i><i class="h-spark"></i><i class="h-glare"></i></div>
     <div class="bar"><span aria-hidden="true">←</span><h1>매출조회</h1><span class="sp"></span><span class="chip">외상만</span></div>
     <div class="date"><span>‹</span>26.10.02 (금)<span>›</span></div>
     <div class="search">거래처 검색</div>
@@ -102,7 +106,10 @@ body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);overf
   <div class="ctl">
     <div class="r"><div class="status" id="status">폰을 좌우로 기울여 보세요</div><span style="flex:1"></span><button class="btn" id="perm" hidden>센서 켜기</button></div>
     <div class="r"><label>방식</label><div class="seg" id="modes"><button class="btn ghost on" data-m="holo">홀로 (새로)</button><button class="btn ghost" data-m="vanilla">바닐라</button></div></div>
-    <div class="r"><label for="amt">세기</label><input id="amt" type="range" min="0" max="100" value="75"></div>
+    <div class="r"><label for="sF">무지개</label><input id="sF" type="range" min="0" max="150" value="80"></div>
+    <div class="r"><label for="sS">별</label><input id="sS" type="range" min="0" max="150" value="90"></div>
+    <div class="r"><label for="sL">사선 결</label><input id="sL" type="range" min="0" max="150" value="50"></div>
+    <div class="r"><label for="amt">빛(전체)</label><input id="amt" type="range" min="0" max="100" value="75"></div>
     <div class="r"><label>테마</label><div class="seg"><button class="btn ghost" id="tLight">데이</button><button class="btn ghost" id="tDark">다크</button><button class="btn ghost" id="tSys">시스템</button></div></div>
   </div>
 </div>
@@ -127,7 +134,7 @@ addEventListener('deviceorientation',e=>{if(e.gamma==null||gotSensor)return;gotS
 setTimeout(()=>{if(!gotSensor)status.innerHTML='센서 신호 없음 → <b>손가락·마우스</b>로 움직여 보세요';},1500);
 if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){const p=document.getElementById('perm');p.hidden=false;p.onclick=()=>DeviceOrientationEvent.requestPermission().then(r=>{p.hidden=r==='granted';}).catch(()=>{status.textContent='센서 권한이 거절됐어요';});}
 // ── 홀로: 기울기 → 빛 위치(우리 계산). 처음 자세가 가운데, 손떨림은 부드럽게 ──
-const app=document.getElementById('app');
+const app=document.getElementById('app');const sF=document.getElementById('sF'),sS=document.getElementById('sS'),sL=document.getElementById('sL');
 // 반짝이 결(우리가 만든 무작위 점) — 이미지 파일 없이 캔버스로 생성
 (function(){const c=document.createElement('canvas');c.width=c.height=160;const g=c.getContext('2d');for(let n=0;n<220;n++){const x=Math.random()*160,y=Math.random()*160,r=Math.random()*1.3+.3,a=Math.random()*.9+.1;g.fillStyle=`hsla(${Math.random()*360},90%,80%,${a})`;g.beginPath();g.arc(x,y,r,0,7);g.fill();}app.style.setProperty('--spark',`url(${c.toDataURL()})`);})();
 let bG=null,bB=null,tmx=50,tmy=40,mx=50,my=40;
@@ -135,7 +142,7 @@ addEventListener('deviceorientation',e=>{if(e.gamma==null)return;if(bG===null){b
 function px(cx,cy){if(bG!==null)return;const r=head.getBoundingClientRect();tmx=Math.min(100,Math.max(0,(cx-r.left)/r.width*100));tmy=Math.min(100,Math.max(0,(cy-r.top)/r.height*100));}
 addEventListener('pointermove',e=>px(e.clientX,e.clientY));
 addEventListener('touchmove',e=>px(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
-(function hl(){const k=reduce?1:.14;mx+=(tmx-mx)*k;my+=(tmy-my)*k;app.style.setProperty('--mx',mx.toFixed(2));app.style.setProperty('--my',my.toFixed(2));app.style.setProperty('--hi',(amt.value/100).toFixed(2));requestAnimationFrame(hl);})();
+(function hl(){const k=reduce?1:.14;mx+=(tmx-mx)*k;my+=(tmy-my)*k;app.style.setProperty('--mx',mx.toFixed(2));app.style.setProperty('--my',my.toFixed(2));app.style.setProperty('--hi',(amt.value/100).toFixed(2));app.style.setProperty('--hf',(sF.value/100).toFixed(2));app.style.setProperty('--hs',(sS.value/100).toFixed(2));app.style.setProperty('--hl',(sL.value/100).toFixed(2));requestAnimationFrame(hl);})();
 document.querySelectorAll('#modes .btn').forEach(b=>b.onclick=()=>{app.dataset.mode=b.dataset.m;document.querySelectorAll('#modes .btn').forEach(o=>o.classList.toggle('on',o===b));});
 const root=document.documentElement;
 root.setAttribute('data-theme','dark'); // 홀로는 다크 전용 — 다크로 시작
