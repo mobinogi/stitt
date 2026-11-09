@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>스팃 PC</title>
+<meta name="description" content="스팃 장부를 PC에서 자세히 보기">
+<meta name="theme-color" content="#1e2a47">
+<link rel="icon" href="./icons/icon-64.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-180.png">
+  <script type="module" crossorigin src="./assets/index-B9hZFsKT.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-6-mb2ykX.css">
+<link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
+<body>
+<aside>
+  <a class="logo" href="https://stitt.kr" target="_blank" rel="noopener" title="stitt.kr">
+    <svg viewBox="196 151 1721 982" aria-label="스팃">
+      <defs><linearGradient id="sil" x1="0" y1="151" x2="0" y2="1133" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#c4ccd8"/></linearGradient></defs>
+      <path fill="url(#sil)" d="M 356.82,710.07 L 280.64,609.76 L 533.33,416.82 L 554.76,396.76 L 561.76,384.13 L 564.64,369.38 L 564.95,240.82 L 709.70,240.82 L 709.89,368.63 L 712.89,381.13 L 720.76,394.50 L 754.20,425.19 L 994.01,609.50 L 917.70,709.94 L 683.32,529.69 L 646.20,497.82 L 632.20,497.82 L 607.20,518.82 Z M 1041.63,947.82 L 232.88,947.82 L 232.82,834.88 L 1041.63,834.82 Z M 1597.63,687.69 L 1150.82,687.63 L 1150.88,240.82 L 1574.82,240.88 L 1574.63,353.82 L 1293.82,353.88 L 1294.01,412.82 L 1574.63,412.82 L 1574.82,515.63 L 1294.01,515.69 L 1293.82,573.63 L 1597.63,573.82 Z M 1854.63,798.81 L 1710.82,798.75 L 1710.82,499.25 L 1854.76,389.81 Z M 1800.44,1089.19 L 1595.06,942.94 L 1560.44,914.69 L 1546.06,914.94 L 1511.56,942.94 L 1306.19,1089.19 L 1233.50,987.13 L 1438.69,840.94 L 1459.06,824.07 L 1472.38,809.00 L 1480.88,792.88 L 1481.94,749.82 L 1623.69,749.82 L 1624.63,792.13 L 1633.13,807.50 L 1647.32,823.82 L 1667.94,840.94 L 1873.13,987.13 Z"/>
+      <path fill="#ff0081" d="M 1711.02,188.02 L 1853.98,188.02 L 1853.98,315.46 L 1715.60,420.62 L 1711.02,420.62 Z"/>
+    </svg>
+  </a>
+  <nav class="nav">
+    <a data-soon><i></i>대시보드</a>
+    <a class="on"><i></i>장부 표</a>
+    <a data-soon><i></i>거래처 원장</a>
+    <a data-soon><i></i>거래명세표 인쇄</a>
+  </nav>
+  <div class="aside-foot">
+    <!-- PC에 설치하기 — 브라우저가 '설치할 수 있다'고 알려 줄 때만 보인다(크롬·엣지). 설치한 창 안에선 안 보인다(main.ts) -->
+    <button class="install" id="installBtn" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4M12 7v5m-2.5-2.5L12 12l2.5-2.5"/></svg>
+      <span><b>PC에 설치하기</b><small>바탕화면에서 바로 열기</small></span>
+    </button>
+    <div class="file">
+      <span class="biz" id="bizName"></span>
+      <b>장부 파일<em class="demoTag">시연</em></b><span><span class="fn" id="fileName"></span><br><span id="fileTime"></span></span>
+      <div class="bookSel one"><select id="bookSel" title="이 파일 안의 다른 사업장"></select></div>
+      <button class="pick" data-pick><svg class="lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>새 백업 파일 넣기</button>
+    </div>
+  </div>
+</aside>
+
+<main>
+  <div class="welcome">
+    <div class="in">
+      <h2>폰 장부를 PC에서 크게 봐요</h2>
+      <p class="pub-only">지금은 <b>시연 장부</b>로 둘러볼 수 있어요.<br>내 장부 넣기는 스팃 구독자용으로 곧 열려요.</p>
+      <p class="priv-only">스팃 앱에서 받은 백업 파일을 이 창에 끌어다 놓으세요.<br>장부는 이 PC 안에서만 열려요. 어디로도 보내지 않아요.</p>
+      <div class="steps priv-only">① 폰 스팃 → 환경 설정 → 백업 / 복원 → <b>백업 내보내기</b><br>② 그 파일을 PC로 옮기기(카톡 나에게 보내기·메일 등)<br>③ 여기에 끌어다 놓기</div>
+      <div class="wbtns priv-only"><button class="btn pink" data-pick>백업 파일 고르기</button><button class="btn" data-demo>시연 장부로 둘러보기</button></div>
+      <div class="wbtns pub-only"><button class="btn pink" data-demo>시연 장부로 둘러보기</button><button class="btn lockbtn" data-pick><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>내 백업 파일 넣기</button></div>
+      <small class="priv-only">stitt_backup_날짜.zip(전체) · stitt_사업장_날짜.db(하나) 둘 다 돼요</small>
+    </div>
+  </div>
+
+  <div class="top">
+    <h1>매출</h1>
+    <div class="seg" id="view">
+      <div class="knob"></div>
+      <button data-v="slip" class="on">전표</button>
+      <button data-v="client">거래처별</button>
+      <button data-v="product">상품별</button>
+      <button data-v="day">일별</button>
+      <button data-v="month">월별</button>
+    </div>
+    <label class="search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" placeholder="거래처 · 상품 · 전표번호">
+    </label>
+    <button class="btn" id="copyBtn">선택 복사</button>
+    <button class="btn pink" id="xlsx">엑셀로 받기</button>
+  </div>
+  <div class="chips" id="pays">
+    <div class="colwrap"><button class="chip col" id="colBtn">칸<span class="cnt"><span class="in" id="colCnt"></span></span> ▾</button><div class="colpop" id="colPop"></div></div>
+    <span class="div"></span>
+    <div class="seg sm" id="period">
+      <div class="knob"></div>
+      <button data-p="today">오늘</button>
+      <button data-p="week">이번 주</button>
+      <button data-p="month" class="on">이번 달</button>
+      <button data-p="last">지난달</button>
+      <button data-p="year">올해</button>
+      <button data-p="all">전체</button>
+    </div>
+    <button class="range" id="range" title="달력에서 기간 고르기"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/></svg><span id="rangeTxt"></span></button>
+    <span class="div"></span>
+    <span id="payChips"></span>
+    <span class="pin" id="pin"></span>
+    <span class="sp"></span>
+    <div class="seg sm hideable" id="qtyMode"><div class="knob"></div><button data-q="ea" class="on">낱개</button><button data-q="box">박스</button></div>
+    <span class="toggle hideable" id="expAll"><span class="sw"></span>품목까지 펼치기</span>
+  </div>
+  <div class="cards" id="cards"></div>
+  <div class="chart off" id="chart">
+    <div class="ch-hd"><b id="chTitle"></b><span class="ch-sub" id="chSub"></span><span class="lg" id="chLegend"></span></div>
+    <svg id="chSvg" role="img" aria-label="매출 그래프"></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <div class="sheet" id="sheet"></div>
+  <div class="bottom">
+    <div class="tabs" id="tabs">
+      <div class="bar"></div>
+      <button class="on">매출</button><button>매입</button><button>거래처</button><button>상품·재고</button><button>미수금</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+</main>
+
+<input type="file" id="fileInput" accept=".zip,.db,.stbak,application/zip" hidden>
+<div class="drop">여기에 놓으면 장부를 열어요</div>
+<div class="busy"><div class="in"><span class="dot"></span><span id="busyMsg"></span></div></div>
+<div class="toast" id="toast"></div>
+</body>
+</html>
