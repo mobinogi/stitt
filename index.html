@@ -75,6 +75,13 @@
   .teaser{list-style:none;margin:22px 0 26px;padding:0;display:flex;flex-wrap:wrap;gap:8px 10px}
   .teaser li{font-family:var(--body);font-size:13.5px;color:var(--muted);
     border:1px solid var(--line);border-radius:999px;padding:7px 13px;background:rgba(255,255,255,.02)}
+  .pcbtn{display:flex;width:max-content;align-items:center;gap:9px;margin:0 0 22px;padding:12px 18px;border-radius:13px;
+    font-family:var(--disp);font-weight:800;font-size:15px;color:var(--ink);text-decoration:none;
+    background:var(--raised);border:1px solid var(--line-2);transition:transform .2s cubic-bezier(.2,.7,.2,1),border-color .2s,background .2s}
+  .pcbtn .arr{transition:transform .2s cubic-bezier(.2,.7,.2,1);color:var(--muted)}
+  .pcbtn:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--cta) 60%,transparent);background:color-mix(in srgb,var(--cta) 10%,var(--raised))}
+  .pcbtn:hover .arr{transform:translateX(3px);color:var(--ink)}
+  @media (max-width:860px), (hover:none){ .pcwrap{display:none} }
   .pill{display:inline-flex;align-items:center;gap:8px;font-family:var(--disp);font-weight:800;
     font-size:13px;letter-spacing:.02em;color:var(--ink);background:var(--raised);
     border:1px solid var(--line-2);border-radius:999px;padding:11px 18px}
@@ -204,6 +211,8 @@
           <li>매출·매입 관리</li><li>거래 달력</li><li>전자세금계산서</li>
           <li>외상·수금</li><li>엑셀 불러오기</li>
         </ul>
+        <!-- PC판 둘러보기(2026-11-10 형) — 시연 장부로 바로. 폰에선 숨김(큰 화면용) -->
+        <div class="pcwrap rise d3"><a class="pcbtn" href="/pc/?demo" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>PC로 둘러보기<span class="arr" aria-hidden="true">→</span></a></div>
         <span class="pill rise d3"><span class="dot"></span>v1.0 · 2026</span>
       </div>
     </div>
