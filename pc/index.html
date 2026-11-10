@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#1e2a47">
 <link rel="icon" href="./icons/icon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="./icons/icon-180.png">
-  <script type="module" crossorigin src="./assets/index-Cm6QQADF.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CI7SPiuU.css">
+  <script type="module" crossorigin src="./assets/index-Dgct7qSI.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-lju5ba8r.css">
 <script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
 <script>
@@ -87,6 +87,8 @@
     <label class="search">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" placeholder="거래처 · 상품 · 전표번호">
+      <!-- 거래처(상품) 찾기 창 — 이름을 다 몰라도 고르게(2026-11-10 형, 더존 위하고 코드도움처럼). 단축키 F2. ui/finder.ts -->
+      <button class="sbtn" id="findBtn" type="button" title="거래처 찾기 (F2)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h6M7 13h4"/><circle cx="16" cy="14" r="2.5"/><path d="m18 16 2 2"/></svg></button>
     </label>
     <!-- 거래처 등록(2026-11-10 형 — 앱 화면 그대로, clients/form.ts). 거래처 시트에서만 보인다(sheet.ts controls) -->
     <button class="btn" id="addStore"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 4.5 4h15L21 9.5M3 9.5h18M3 9.5V20h9M9 20v-6h3"/><path d="M18 14v6m-3-3h6"/></svg><span>거래처 등록</span></button>
