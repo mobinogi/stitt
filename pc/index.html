@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#1e2a47">
 <link rel="icon" href="./icons/icon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="./icons/icon-180.png">
-  <script type="module" crossorigin src="./assets/index-DtRYhdJk.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DDUTBuzx.css">
+  <script type="module" crossorigin src="./assets/index-D9R8B2HR.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-aWzmPMVo.css">
 <script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
 <script>
@@ -35,7 +35,9 @@
     <a class="on" id="navSheet" title="거래현황"><i></i><svg class="ni" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11"/></svg><span class="nl">거래현황</span></a>
     <a id="navLedger" title="거래처 원장"><i></i><svg class="ni" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v16H5.5A1.5 1.5 0 0 0 4 20.5z"/><path d="M4 20.5A1.5 1.5 0 0 0 5.5 22H19M8 7h7M8 11h5"/></svg><span class="nl">거래처 원장</span></a>
     <a id="navPledger" title="상품 원장"><i></i><svg class="ni" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg><span class="nl">상품 원장</span></a>
-    <a data-soon title="거래명세표 인쇄"><i></i><svg class="ni" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg><span class="nl">거래명세표 인쇄</span></a>
+    <!-- 거래처 등록(2026-11-10 형 "사이드에도") — 화면 이름이 아니라 할 일이라 켜짐 표시는 안 한다. 누르면 거래처 시트 + 등록 판 -->
+    <a id="navAddStore" title="거래처 등록"><i></i><svg class="ni" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 4.5 4h15L21 9.5M3 9.5h18M3 9.5V20h9M9 20v-6h3"/><path d="M18 14v6m-3-3h6"/></svg><span class="nl">거래처 등록</span></a>
+    <a data-soon="거래명세표" title="거래명세표 인쇄"><i></i><svg class="ni" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/></svg><span class="nl">거래명세표 인쇄</span></a>
   </nav>
   <div class="aside-foot">
     <!-- 메뉴를 접었을 때만 보이는 장부 파일 아이콘 — 누르면 메뉴가 펼쳐진다 -->
@@ -69,6 +71,8 @@
 
   <!-- 대시보드(dash/dash.ts) — 왼쪽 메뉴 '대시보드'를 누르면 거래현황 대신 이 판이 보인다 -->
   <div class="dash" id="dash"></div>
+  <!-- 본 화면 등록 화면(왼쪽 메뉴 '거래처 등록' — clients/form.ts 화면 모드). body.page-on일 때만 보인다 -->
+  <div class="sf-page" id="page"></div>
   <div class="top">
     <h1 id="sheetTitle">매출</h1>
     <div class="seg" id="view">
