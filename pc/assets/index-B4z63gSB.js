@@ -53,13 +53,13 @@
       <span class="sf-acts"><button class="btn sf-cancel">${s?"처음부터 다시":"닫기"}</button><button class="btn pink sf-save"></button></span>
     </header>
     <div class="sf-body">
-      <!-- 거래 중 / 거래 중단 상자 — 앱 _buildStatusCard 그대로(2026-11-10 형 "예전 박스 살려줘, 이쁘고 바로 보인다") -->
-      <div class="sf-status">
-        <span class="sf-sico"></span>
-        <span class="sf-stxt"><b></b><small></small></span>
-        <button class="sf-sw" role="switch"><i></i></button>
-      </div>
       <div class="sf-grid">
+        <!-- 거래 중 / 거래 중단 상자 — 앱 _buildStatusCard 그대로(2026-11-10 형 "예전 박스 살려줘, 이쁘고 바로 보인다") -->
+        <div class="sf-status a-status">
+          <span class="sf-sico"></span>
+          <span class="sf-stxt"><b></b><small></small></span>
+          <button class="sf-sw" role="switch"><i></i></button>
+        </div>
         <div class="sf-card a-basic">
           <h3>기본 정보</h3>
           ${g("거래처명 (필수)",f("name"))}<em class="sf-err">필수 입력입니다</em>
@@ -117,13 +117,13 @@
       <span class="sf-acts"><button class="btn sf-cancel">${s?"처음부터 다시":"닫기"}</button><button class="btn pink sf-save"></button></span>
     </header>
     <div class="sf-body">
-      <!-- 취급 중 / 취급 중단 상자 — 거래처 화면과 같은 상자(앱은 맨 아래 취급여부 스위치)(2026-11-10 형 "예전 박스 살려줘, 이쁘고 바로 보인다") -->
-      <div class="sf-status">
-        <span class="sf-sico"></span>
-        <span class="sf-stxt"><b></b><small></small></span>
-        <button class="sf-sw" data-sw="active" role="switch"><i></i></button>
-      </div>
       <div class="sf-grid pf-grid">
+        <!-- 취급 중 / 취급 중단 상자 — 거래처 화면과 같은 상자(앱은 맨 아래 취급여부 스위치)(2026-11-10 형 "예전 박스 살려줘, 이쁘고 바로 보인다") -->
+        <div class="sf-status a-status">
+          <span class="sf-sico"></span>
+          <span class="sf-stxt"><b></b><small></small></span>
+          <button class="sf-sw" data-sw="active" role="switch"><i></i></button>
+        </div>
         <div class="sf-card a-basic">
           <h3>기본 정보</h3>
           ${l("품명 (필수)",r("name"))}<em class="sf-err" data-err="name">품명 입력은 필수입니다</em>
