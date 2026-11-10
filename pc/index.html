@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#1e2a47">
 <link rel="icon" href="./icons/icon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="./icons/icon-180.png">
-  <script type="module" crossorigin src="./assets/index-D4Y9U7w6.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DtWb6ATG.css">
+  <script type="module" crossorigin src="./assets/index-BAlOW8WZ.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CkOrmuex.css">
 <script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
 <script>
@@ -157,6 +157,9 @@
     <svg id="chSvg" role="img" aria-label="매출 그래프"></svg>
     <div class="tip" id="tip"></div>
   </div>
+  <!-- 표 + 오른쪽 거래처 정보 칸(2026-11-10 형, 위하고 전표상세정보처럼 — clients/info.ts). 정보 칸은 거래처 원장·거래처 시트에서만 -->
+  <div class="sheetrow">
+  <div class="sheetcol">
   <div class="sheet" id="sheet"></div>
   <div class="bottom">
     <!-- 엑셀 테마 시트 이동 ‹ › (2026-11-10 형) — 이전·다음 시트로. 스팃 테마에선 숨김 -->
@@ -166,6 +169,9 @@
       <button class="on" data-k="sales">매출</button><button data-k="buy">매입</button><button data-k="client">거래처</button><button data-k="product">상품·재고</button><button data-k="recv">미수금</button>
     </div>
     <div class="status" id="status"></div>
+  </div>
+  </div>
+  <div class="dpanel" id="dpanel"><div class="ip-hd"><span class="ip-t">거래처 정보</span><button class="ip-fold" id="ipFold" title="접기·펼치기"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 6 6 6-6 6"/></svg></button></div><div class="ip-body" id="ipBody"></div><div class="ip-ft"><button class="btn" id="ipEdit">거래처 정보 수정</button></div></div>
   </div>
 </main>
 
