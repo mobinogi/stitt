@@ -8,8 +8,8 @@
 <meta name="theme-color" content="#1e2a47">
 <link rel="icon" href="./icons/icon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="./icons/icon-180.png">
-  <script type="module" crossorigin src="./assets/index-DPRrGdYE.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Dqq_3tNz.css">
+  <script type="module" crossorigin src="./assets/index-C5sUetcB.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-Co1mJooq.css">
 <script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
 <script>
@@ -84,6 +84,8 @@
       <button data-v="day">일별</button>
       <button data-v="month">월별</button>
     </div>
+    <!-- 오른쪽으로 밀기 — 찾기 칸이 원장에서 날짜 옆으로 옮겨 가도 복사·엑셀·설정 단추는 오른쪽 끝 그대로(2026-11-11 형). 예전엔 찾기 칸의 margin-left:auto가 이 일을 했다 -->
+    <span class="topsp"></span>
     <label class="search">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" placeholder="거래처 · 상품 · 전표번호">
