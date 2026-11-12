@@ -8,8 +8,19 @@
 <meta name="theme-color" content="#1e2a47">
 <link rel="icon" href="./icons/icon-64.png" type="image/png">
 <link rel="apple-touch-icon" href="./icons/icon-180.png">
-  <script type="module" crossorigin src="./assets/index-BkCLssRK.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BtfYTpwX.css">
+<script>
+  /* 로그인 화면이 필요하면 장부 화면을 그리기 전부터 가린다(2026-11-12 형 "로그인 화면에서 새로 고침하면 장부 화면이 잠깐 나와").
+     로그인 화면(ui/gate.ts)은 프로그램이 돈 뒤에 덮이고 0.4초 동안 서서히 나타나서, 그 사이 먼저 그려진 장부가 비쳤다.
+     규칙은 gate.ts gateOpen 과 같다(카카오에서 돌아옴 · 통과증 없음/기한 지남 = 로그인 필요). %VITE_LOGIN% 은 빌드 때 바뀐다(진짜판만 '1').
+     가림을 푸는 곳 = gate.ts(안개가 걷히기 시작할 때) · main.ts(바로 들어갈 때) */
+  try { if ('%VITE_LOGIN%' === '1') { var gp = JSON.parse(localStorage.getItem('stitt_pc_pass') || 'null');
+    if (/[?&](code|error)=/.test(location.search) || !(gp && gp.exp > Date.now())) document.documentElement.classList.add('gate-wait'); } } catch (e) {}
+  /* 시연판(번호 화면) — 이 창에서 번호를 아직 안 넣었으면 가림. 30da183a4b3768808c2f6d050f8c3671081cb9bfe863d51824b5c9cef14dc000 = 번호 해시(시연판만) */
+  try { if ('%VITE_LOGIN%' !== '1' && '30da183a4b3768808c2f6d050f8c3671081cb9bfe863d51824b5c9cef14dc000'.length === 64 && sessionStorage.getItem('stitt_pc_gate') !== '30da183a4b3768808c2f6d050f8c3671081cb9bfe863d51824b5c9cef14dc000') document.documentElement.classList.add('gate-wait'); } catch (e) {}
+</script>
+<style>html.gate-wait body>*:not(.gt){visibility:hidden} html.gate-wait body{background:linear-gradient(180deg,#99b0b8 0%,#5a6c86 35%,#262f55 62%,#141420 100%) fixed}  /* 로그인 화면(.gt) 바탕과 같은 색 — 어두웠다 밝아지는 깜빡임 없게 */</style>
+  <script type="module" crossorigin src="./assets/index-DmrgrEDi.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DlPjKp2e.css">
 <script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
 <script>
@@ -58,6 +69,8 @@
       <div class="bookSel one"><select id="bookSel" title="이 파일 안의 다른 사업장"></select></div>
       <button class="pick" data-pick><svg class="lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>새 백업 파일 넣기</button>
     </div>
+    <!-- 로그아웃(2026-11-12 형 "사이드바에") — 진짜판(로그인 붙은 판)에만. 왼쪽 메뉴 줄과 같은 모양, 접으면 아이콘만. 누르면 확인 뒤 이 PC 장부도 지움(main.ts logout) -->
+    <button class="side-out app-only" id="logoutBtn" title="로그아웃"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg><span>로그아웃</span></button>
   </div>
 </aside>
 
