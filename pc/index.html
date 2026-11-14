@@ -30,8 +30,8 @@
   try { if ('%VITE_LOGIN%' !== '1' && '30da183a4b3768808c2f6d050f8c3671081cb9bfe863d51824b5c9cef14dc000'.length === 64 && sessionStorage.getItem('stitt_pc_gate') !== '30da183a4b3768808c2f6d050f8c3671081cb9bfe863d51824b5c9cef14dc000') document.documentElement.classList.add('gate-wait'); } catch (e) {}
 </script>
 <style>html.gate-wait body>*:not(.gt){visibility:hidden} html.gate-wait body{background:linear-gradient(180deg,#99b0b8 0%,#5a6c86 35%,#262f55 62%,#141420 100%) fixed}  /* 로그인 화면(.gt) 바탕과 같은 색 — 어두웠다 밝아지는 깜빡임 없게 */</style>
-  <script type="module" crossorigin src="./assets/index-U-IMVftX.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BOaJg3N_.css">
+  <script type="module" crossorigin src="./assets/index-D-r6IhMP.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-COzDM9cG.css">
 <script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
 <!-- 설치판 제목줄 없앰 상태에서 창을 끌어 옮기는 띠(styles.css .wco-bar) — 보이지 않음, 누름도 통과 -->
@@ -83,6 +83,8 @@
       <b>장부 파일<em class="demoTag">시연</em></b><span><span class="fn" id="fileName"></span><br><span id="fileTime"></span></span>
       <div class="bookSel one"><select id="bookSel" title="이 파일 안의 다른 사업장"></select></div>
       <button class="pick" data-pick><svg class="lock" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>새 백업 파일 넣기</button>
+      <!-- 동기화 = 폰 [PC로 보내기]로 올라온 장부 받기(2026-11-14, main.ts syncFromPhone) — 로그인 진짜판만 -->
+      <button class="pick login-only" data-sync>동기화</button>
     </div>
     <!-- 로그아웃(2026-11-12 형 "사이드바에") — 진짜판(로그인 붙은 판)에만. 왼쪽 메뉴 줄과 같은 모양, 접으면 아이콘만. 누르면 확인 뒤 이 PC 장부도 지움(main.ts logout) -->
     <button class="side-out app-only" id="logoutBtn" title="로그아웃"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></svg><span>로그아웃</span></button>
@@ -96,7 +98,7 @@
       <p class="pub-only">지금은 <b>시연 장부</b>로 둘러볼 수 있어요.<br>내 장부 넣기는 스팃 구독자용으로 곧 열려요.</p>
       <p class="priv-only">스팃 앱에서 받은 백업 파일을 이 창에 끌어다 놓으세요.<br>장부는 이 PC 안에서만 열려요. 어디로도 보내지 않아요.</p>
       <div class="steps priv-only">① 폰 스팃 → 환경 설정 → 백업 / 복원 → <b>백업 내보내기</b><br>② 그 파일을 PC로 옮기기(카톡 나에게 보내기·메일 등)<br>③ 여기에 끌어다 놓기</div>
-      <div class="wbtns priv-only"><button class="btn pink" data-pick>백업 파일 고르기</button><button class="btn" data-demo>시연 장부로 둘러보기</button></div>
+      <div class="wbtns priv-only"><button class="btn pink" data-pick>백업 파일 고르기</button><button class="btn login-only" data-sync>동기화</button><button class="btn" data-demo>시연 장부로 둘러보기</button></div>
       <div class="wbtns pub-only"><button class="btn pink" data-demo>시연 장부로 둘러보기</button><button class="btn lockbtn" data-pick><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>내 백업 파일 넣기</button></div>
       <small class="priv-only">stitt_backup_날짜.zip(전체) · stitt_사업장_날짜.db(하나) 둘 다 돼요</small>
     </div>
@@ -127,9 +129,8 @@
     <!-- 거래처 등록(2026-11-10 형 — 앱 화면 그대로, clients/form.ts). 거래처 시트에서만 보인다(sheet.ts controls) -->
     <button class="btn" id="addStore"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 4.5 4h15L21 9.5M3 9.5h18M3 9.5V20h9M9 20v-6h3"/><path d="M18 14v6m-3-3h6"/></svg><span>거래처 등록</span></button>
     <button class="btn" id="addProduct"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8 12 3 3 8v8l9 5"/><path d="M3 8l9 5 9-5M12 13v8"/><path d="M18 14v6m-3-3h6"/></svg><span>상품 등록</span></button>
-    <!-- 견적서·발주서 새로 쓰기(2026-11-13) — 견적서·발주서 시트에서만(sheet.ts controls). 누르면 빈 종이(letters/edit.ts) -->
-    <button class="btn gone" id="newQuote"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6"/><path d="M14 3v5h5v5"/><path d="M18 15v6m-3-3h6"/></svg><span>새 견적서</span></button>
-    <button class="btn gone" id="newPo"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6"/><path d="M14 3v5h5v5"/><path d="M18 15v6m-3-3h6"/></svg><span>새 발주서</span></button>
+    <!-- 견적서·발주서 작성하기(2026-11-13, 2026-11-15 형 "하나로 통합, 엑셀로 받기처럼 색") — 견적서 탭이면 새 견적서, 발주서 탭이면 새 발주서(main.ts). 견적서·발주서 시트에서만(sheet.ts controls) -->
+    <button class="btn pink gone" id="newLetter"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h6"/><path d="M14 3v5h5v5"/><path d="M18 15v6m-3-3h6"/></svg><span>작성하기</span></button>
     <button class="btn" id="copyBtn"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="8" y="8" width="12" height="13" rx="1.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v11A1.5 1.5 0 0 0 5.5 18H8"/></svg><span>선택 복사</span></button>
     <!-- 홈택스 일괄발급 엑셀(2026-11-12 형 — 앱 기능 그대로, ui/hometax.ts). 매출 시트에서만 보인다(sheet.ts controls) -->
     <button class="btn" id="hometax"><svg class="rb-ico" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 11h7M9 14.5h7M9 18h4"/></svg><span>홈택스 일괄발급</span></button>
@@ -162,6 +163,8 @@
   <div class="chips" id="pays">
     <div class="colwrap"><button class="chip col" id="colBtn">칸<span class="cnt"><span class="in" id="colCnt"></span></span> ▾</button><div class="colpop" id="colPop"></div></div>
     <span class="div"></span>
+    <!-- 발주서 [진행 중 | 완료](2026-11-15 형 — 앱 견적·발주 목록과 같은 두 단계: 위 탭 [견적서 | 발주서], 발주서일 때만 이것). sheet.ts controls -->
+    <div class="seg sm gone" id="poSeg"><div class="knob"></div><button data-s="po">진행 중</button><button data-s="podone">완료</button></div>
     <div class="seg sm" id="period">
       <div class="knob"></div>
       <button data-p="today">오늘</button>
