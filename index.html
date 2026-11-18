@@ -105,13 +105,35 @@
   .copy .kv b{display:block;font-family:var(--disp);font-weight:900;font-size:22px;color:var(--ink)}
   .copy .kv span{font-size:12.5px;color:var(--faint)}
 
+  /* 첫 화면 폰(진짜 앱 영상) */
+  .hero-stage{display:grid;place-items:center}
+  /* ★ 장면 글자(2026-11-18 형 "말풍선 말고 떠 있는 글자, 화면에") — 폰 화면(영상) 위에 웹 글자로 띄워 영상 시간에 맞춘다(문구만 바꿀 땐 다시 안 찍어도 됨).
+     앱 화면이 밝고 복잡해 글자 둘레에만 흰 번짐을 준다(판·상자 없음 — 말풍선처럼 안 보이게). 긴 문구는 두 줄로 고르게 나뉜다. 높이는 장면마다 빈자리(아래 스크립트 CUES 다섯째 값, 화면 높이 %) */
+  .phone.hero{container-type:inline-size}
+  .cap{position:absolute;left:0;right:0;top:var(--y,70%);z-index:3;margin:0;transform:translateY(-50%);text-align:center;pointer-events:none;
+    font-family:var(--disp);font-weight:800;font-size:6.6cqw;line-height:1.3;letter-spacing:-.02em;color:#0B1533;transition:top .5s cubic-bezier(.2,.8,.2,1);
+    padding:0 8%;text-wrap:balance;word-break:keep-all;
+    text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 8px #fff,0 0 14px #fff,0 0 24px rgba(255,255,255,.95),0 4px 16px rgba(11,21,51,.22)}
+  /* 글자 뒤 판 없음 — 글자 둘레에만 흰 번짐 + 옅은 그림자(2026-11-18 형 "타원 있을 이유가 없다, 글자들만 드롭 섀도") */
+  .cap span{display:block;opacity:0;transform:translateY(12px) scale(.96);filter:blur(6px);transition:opacity .45s ease,transform .6s cubic-bezier(.2,.8,.2,1),filter .45s ease}
+  .cap span+span{color:#4B3BE0;transition-delay:.09s}
+  .cap.on span{opacity:1;transform:none;filter:none}
+  .cap.off span{opacity:0;transform:translateY(-10px);filter:blur(4px);transition-duration:.28s;transition-delay:0s}
+  .cap.on{animation:capFloat 5s ease-in-out infinite}
+  @keyframes capFloat{0%,100%{translate:0 0}50%{translate:0 -4px}}
+  @media (prefers-reduced-motion:reduce){.cap{display:none}}
+  .phone.hero{width:min(330px,78%,calc((100vh - 150px) * 720 / 1472));aspect-ratio:720/1472;border-radius:18px; /* 앱 화면이 모서리까지 꽉 차 있어(상태줄·내비바 잘라 냄) 많이 둥글리면 머리·단추 귀퉁이가 깎인다 */
+    box-shadow:0 50px 110px -40px rgba(0,0,0,.9),0 0 0 8px rgba(255,255,255,.025),0 0 80px -30px rgba(0,204,157,.35)}
+  .phone.hero::before{display:none}
+  .phone.hero video{background:#0A101E}
+
   /* 폰 목업 + 스샷 자리 */
   .stage{display:grid;place-items:center}
-  .phone{position:relative;width:min(300px,74%);aspect-ratio:9/19.3;
-    background:#0A101E;border:1px solid var(--line-2);border-radius:38px;
+  .phone{position:relative;width:min(300px,74%,calc((100vh - 150px) * 720 / 1472));aspect-ratio:720/1472; /* 스샷도 상태줄·내비바 잘라 냄(600x1226) — 영상 폰과 같은 비율 */
+    background:#0A101E;border:1px solid var(--line-2);border-radius:18px; /* 첫 화면 영상 폰과 같은 둥글기(2026-11-18 형) */
     box-shadow:0 40px 90px -40px rgba(0,0,0,.85), 0 0 0 8px rgba(255,255,255,.02);
     overflow:hidden}
-  .phone::before{content:'';position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  .phone::before{display:none;content:'';position:absolute;top:11px; /* 가짜 노치 — 상태줄을 잘라 내서 숨김 */ left:50%;transform:translateX(-50%);
     width:36%;height:8px;border-radius:99px;background:#05080F;z-index:3}
   .phone .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;z-index:2}
   .phone .ph{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;
@@ -183,6 +205,7 @@
     .slide{padding:76px 22px;min-height:auto}
     .cover .inner,.feat .inner{grid-template-columns:1fr;gap:34px}
     .cover .mark-wrap{max-width:280px;margin:0 auto}
+    .phone.hero{width:min(250px,64%)}
     .feat.rev .copy{order:1}.feat.rev .stage{order:2}
     .phone{width:min(260px,70%)}
     .hud{font-size:11px;padding:12px 18px}
@@ -197,9 +220,10 @@
   <section class="slide cover" id="s0">
     <canvas id="ht" aria-hidden="true"></canvas>
     <div class="inner">
-      <div class="mark-wrap rise">
-        <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
-        <div class="bars"><span></span><span></span><span></span><span></span><span></span></div>
+      <!-- ★ 첫 화면 = 진짜 앱 영상(2026-11-18 형 "AI가 만든 그래프 티" → 실제 앱 장면). 지어낸 시연 장부(한빛유통)로 에뮬레이터에서 찍음.
+           들어올 때마다 넷 중 하나부터 무작위, 끝나면 다음 장면(섞은 순서). 움직임 줄이기 설정이면 첫 장면 그림만. -->
+      <div class="hero-stage rise">
+        <div class="phone hero"><video class="shot" id="heroVid" muted playsinline preload="auto"></video><p class="cap" id="heroCap" aria-live="off"></p></div>
       </div>
       <div class="copy">
         <div class="eyebrow rise">소상공인 장부 앱</div>
@@ -427,6 +451,49 @@
 </script>
 <!-- ★ 약관·방침 v2 시행(2026-12-15 0시 한국)부터 아래 링크가 저절로 v2로(2026-11-15 형 "자동으로 바뀌는 거 아냐?").
      앱 LegalLinks.v2From·서버 pc_signin LAUNCH_AT 과 같은 시각 — 바꾸면 같이. 지난 뒤 링크를 v2로 고쳐 적고 이 줄은 지워도 된다. -->
+<script>
+// 첫 화면 영상 — 다섯을 섞어 차례로(처음 것이 무작위). 움직임 줄이기면 첫 그림만.
+(function(){
+  var v=document.getElementById('heroVid'); if(!v) return;
+  var L=['1_매출등록','2_거래달력','3_수주관리','4_외상수금','5_재고관리'];
+  for(var i=L.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=L[i];L[i]=L[j];L[j]=t;}
+  var k=0, base='video/';
+  // ★ 장면 글자 [시작초, 끝초, 한 줄(기능 이름 — 2026-11-18 형 "동작 설명 말고 기능 위주, 과하지 않게"), 화면 높이 %(빈자리)] — 영상 시각 기준(영상 다시 뽑으면 여기 시각도 다시 잴 것).
+  //   문구는 실제 동작만(과장 금지 — 2026-11-18 형 "알아서 정리 안 해 주잖아")
+  var CUES={
+    '1_매출등록':[[0.2,4.9,'손쉬운 매출 등록',62],[5.0,9.4,'박스·낱개 자동 환산',74],[9.5,15.2,'거래처별 최근 판매 상품 기억으로 빠르게 상품을 선택할 수 있어요',74],[16.6,99,'등록 후 바로 프린트로 출력할 수 있어요',66]],
+    '2_거래달력':[[0.2,2.2,'월간 매출·매입 한눈에',82],[2.3,5.3,'날짜별 거래 타임라인',84],[5.4,11.0,'날짜 레일로 빠른 이동',84],[11.2,99,'주간 매출·인기 상품',84]],
+    '3_수주관리':[[0.3,4.0,'거래처별 전용 주문 링크로 간편하게 주문을 받을 수 있어요',84],[4.2,7.8,'품목별 주문 합계',84],[8.0,99,'주문 확인·수량 조정',30]],
+    '4_외상수금':[[0.3,3.4,'거래처별 미수금 관리',84],[3.5,6.3,'전액 수금 한 번에',80],[6.4,99,'미수금 자동 반영',84]],
+    '5_재고관리':[[0.6,3.4,'상품별 재고 상태를 한눈에',84],[3.5,5.0,'재고 적은 순 정렬',84],[5.1,7.0,'상품 이미지를 등록하면 미리보기 이미지가 보여요',84],[7.1,8.6,'부족 상품만 모아 보기',84],[8.7,10.7,'실사 조정·매입 등록 바로',28],[10.8,13.9,'선입선출 남은 매입분 확인',28],[14.0,99,'입고·출고 수불부 자동 기록',84]]
+  };
+
+  var cap=document.getElementById('heroCap'), curCue=null, capT=0;
+  function showCue(c){
+    if(c===curCue) return; curCue=c; clearTimeout(capT); var had=!!cap.innerHTML;
+    cap.classList.remove('on'); cap.classList.add('off');
+    capT=setTimeout(function(){
+      cap.classList.remove('off');
+      if(!c){ cap.innerHTML=''; return; }
+      cap.innerHTML='<span></span>'; cap.children[0].textContent=c[2]; cap.style.setProperty('--y',(c[3]||70)+'%');
+      void cap.offsetWidth; cap.classList.add('on');
+    },had?280:0);   // 앞 글자가 있으면 빠지는 시간만큼 기다렸다 바꾼다
+  }
+  function tick(){
+    var nm=decodeURIComponent((v.currentSrc||v.src).split('/').pop().replace('.mp4',''));   // 지금 틀어진 영상 이름(파일 이름에서)
+    var cs=CUES[nm]||[], t=v.currentTime, c=null;
+    for(var i=0;i<cs.length;i++){ if(t>=cs[i][0]&&t<cs[i][1]){ c=cs[i]; break; } }
+    showCue(c); requestAnimationFrame(tick);
+  }
+  function load(n){ v.poster=base+L[n]+'.jpg'; v.src=base+L[n]+'.mp4'; }
+  load(0);
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var go=function(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); };
+  v.addEventListener('ended',function(){ k=(k+1)%L.length; load(k); go(); });
+  go();
+  if(cap) requestAnimationFrame(tick);
+})();
+</script>
 <script>(function(){if(Date.now()<Date.parse('2026-12-15T00:00:00+09:00'))return;var m={'privacy-v1.html':'privacy-v2.html','terms-v1.html':'terms-v2.html','delete-v0.html':'delete-v1.html'};document.querySelectorAll('a[href*="/legal/"]').forEach(function(a){var h=a.getAttribute('href');for(var k in m){if(h.slice(-k.length)===k){a.setAttribute('href',h.slice(0,-k.length)+m[k]);}}});})();</script>
 </body>
 </html>
